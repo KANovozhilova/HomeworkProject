@@ -57,7 +57,6 @@ public class QueueImpl<E> implements Queue<E> {
     public int size() {
         return size;
     }
-
     @Override
     public boolean isFull() {
         return data.length == size;

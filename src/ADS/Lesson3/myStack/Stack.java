@@ -15,5 +15,4 @@ public interface Stack<E> {
     }
 
     boolean isFull();
-
 }
