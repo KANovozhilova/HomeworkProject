@@ -1,7 +1,6 @@
 package ADS.Lesson4;
 
 public class TwoSideLinkedListImpl<E> extends SimpleLinkedListImpl<E> implements TwoSideLinkedList<E> {
-
     private Node<E> lastElement;
 
 

@@ -1,29 +1,25 @@
 package ADS.Lesson4;
 
-public interface LinkedList<E> {
+public interface LinkedList<E> extends Iterable<E> {
 
     /**
-     * O(1)
      * add element to the beginning of list
      * @param value
      */
     void insertFirst(E value);
 
     /**
-     * O(1)
      * @return remove element from the beginning of list
      */
     E removeFirst();
 
     /**
-     * O(n)
      * @param value
      * @return
      */
     boolean remove(E value);
 
     /**
-     * O(n)
      * @param value
      * @return
      */
@@ -37,6 +33,7 @@ public interface LinkedList<E> {
 
     E getFirst();
 
+    Node<E> getFirstElement();
 
     class Node<E> {
         E item;

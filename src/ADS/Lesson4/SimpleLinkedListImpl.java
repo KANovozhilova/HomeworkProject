@@ -1,14 +1,18 @@
 package ADS.Lesson4;
 
+import ADS.Lesson4.iterator.ListIterator;
+
+import java.util.Iterator;
+
 public class SimpleLinkedListImpl<E> implements LinkedList<E> {
 
     protected int size;
-    protected Node<E> firstElement; //001[005]
+    protected Node<E> firstElement;
 
     @Override
     public void insertFirst(E value) {
-        Node<E> newNode = new Node<>(value, firstElement); // 002[007] | 002[..next->005]
-        firstElement = newNode; //001[007]
+        Node<E> newNode = new Node<>(value, firstElement);
+        firstElement = newNode;
         size++;
     }
 
@@ -96,5 +100,93 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E> {
     @Override
     public E getFirst() {
         return firstElement.item;
+    }
+
+    @Override
+    public Node<E> getFirstElement() {
+        return firstElement;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new LinkedListIterator<>(this);
+    }
+
+
+    private static class LinkedListIterator<E> implements ListIterator<E> {
+
+        private final SimpleLinkedListImpl<E> list;
+
+        private Node<E> current;
+        private Node<E> previous;
+
+        public LinkedListIterator(SimpleLinkedListImpl<E> list) {
+            this.list = list;
+            reset();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public E next() {
+            E nextValue = current.item;
+            previous = current;
+            current = current.next;
+            return nextValue;
+        }
+
+        @Override
+        public void remove() {
+            if (previous == null){
+                list.firstElement = current.next;
+                reset();
+            } else {
+                previous.next = current.next;
+                if ( !hasNext() ) {
+                    reset();
+                } else {
+                    current = current.next;
+                }
+            }
+        }
+
+        @Override
+        public void reset() {
+            current = list.firstElement;
+            previous = null;
+        }
+
+        @Override
+        public void insertBefore(E value) {
+            Node<E> newItem = new Node<>(value, null);
+            if(previous == null) {
+                newItem.next = list.firstElement;
+                list.firstElement = newItem;
+                reset();
+            }
+            else {
+                newItem.next = previous.next;
+                previous.next = newItem;
+                current = newItem;
+            }
+
+        }
+
+        @Override
+        public void insertAfter(E value) {
+            Node<E> newItem = new Node<>(value, null);
+            if (list.isEmpty()){
+                list.firstElement = newItem;
+                current = newItem;
+            } else {
+                newItem.next = current.next;
+                current.next = newItem;
+                next();
+            }
+        }
+
     }
 }

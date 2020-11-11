@@ -8,7 +8,7 @@ import ADS.Lesson3.myStack.Stack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestLesson4 {
+public class Test4 {
     public static void main(String[] args) {
 //        testLinkedList();
 //        testStack();

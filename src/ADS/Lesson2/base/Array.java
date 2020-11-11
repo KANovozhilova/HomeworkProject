@@ -1,4 +1,4 @@
-package ADS.base;
+package ADS.Lesson2.base;
 
 public interface Array<E> {
 
