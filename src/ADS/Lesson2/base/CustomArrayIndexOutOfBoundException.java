@@ -1,4 +1,4 @@
-package ADS.base;
+package ADS.Lesson2.base;
 
 public class CustomArrayIndexOutOfBoundException extends RuntimeException {
     public CustomArrayIndexOutOfBoundException(int index, int size) {

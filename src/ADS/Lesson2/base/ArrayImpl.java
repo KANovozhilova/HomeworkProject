@@ -1,4 +1,4 @@
-package ADS.base;
+package ADS.Lesson2.base;
 
 import java.util.Arrays;
 

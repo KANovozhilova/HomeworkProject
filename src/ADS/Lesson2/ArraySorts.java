@@ -1,9 +1,9 @@
 package ADS.Lesson2;
 
-import ADS.base.ArrayImpl;
+import ADS.Lesson2.base.ArrayImpl;
 
 public class ArraySorts {
-//    private static final int ARRAY_CAPACITY = 10000;     оставлено для теста
+//    private static final int ARRAY_CAPACITY = 10000;    оставлено для теста
     private static final int ARRAY_CAPACITY = 1000000;
 
     public static void main(String[] args) {
