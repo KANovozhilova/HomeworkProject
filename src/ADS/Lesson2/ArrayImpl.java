@@ -1,8 +1,8 @@
-package ADS.Lesson2.base;
+package ADS.Lesson2;
 
 import java.util.Arrays;
 
-public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
+public class ArrayImpl <E extends Comparable<? super E>> implements Cloneable, Array<E> {
     private static final int DEFAULT_CAPACITY = 8;
     protected E[] data;
     protected int size;
@@ -12,8 +12,8 @@ public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayImpl(int initCapacity) {
-        this.data = (E[]) new Comparable[initCapacity];
+    public ArrayImpl(int initialCapacity) {
+        this.data = (E[]) new Comparable[initialCapacity];
     }
 
     @Override
@@ -24,12 +24,19 @@ public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
 
     @Override
     public void insert(E value, int index) {
+        doInsert(value, index);
+    }
+
+    protected void doInsert(E value, int index) {
         checkAndGrow();
         if (index == size) {
             add(value);
         }
         else {
             checkIndex(index);
+//            for (int i = size - 1; i >= index; i--) {
+//                data[i + 1] = data[i];
+//            }
             if (size - index >= 0)  {
                 System.arraycopy(data, index, data, index + 1, size - index);
             }
@@ -53,10 +60,12 @@ public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
     @Override
     public E remove(int index) {
         checkIndex(index);
+
         E removedValue = data[index];
         if (size - 1 - index >= 0) {
-            System.arraycopy(data, index +1, data, index, size - 1 - index);
+            System.arraycopy(data, index + 1, data, index, size - 1 - index);
         }
+
         data[size - 1] = null;
         size--;
         return removedValue;
@@ -83,19 +92,39 @@ public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
     }
 
     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < size - 1; i++) {
+            sb.append(data[i]);
+            sb.append(", ");
+        }
+        if (size > 0) {
+            sb.append(data[size - 1]);
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
     public void trimToSize() {
         data = Arrays.copyOf(data, size);
     }
 
     @Override
     public void sortBubble() {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size - 1; i++) {
             for (int j = 0; j < size - 1 - i; j++) {
-                if (data[j].compareTo(data[j+1]) > 0) {
-                    swap(j, j+1);
+                if (data[j].compareTo(data[j + 1]) > 0) {
+                    swap(j, j + 1);
                 }
             }
         }
+    }
+
+    private void swap(int indexA, int indexB) {
+        E temp = data[indexA];
+        data[indexA] = data[indexB];
+        data[indexB] = temp;
     }
 
     @Override
@@ -124,39 +153,43 @@ public class ArrayImpl <E extends Comparable<? super E>> implements Array<E> {
         }
     }
 
-    private void swap(int indexA, int indexB) {
-        E temp = data[indexA];
-        data[indexA] = data[indexB];
-        data[indexB] = temp;
-    }
-
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new CustomArrayIndexOutOfBoundException(index, size);
+            throw new MyCustomArrayIndexOutOfBoundsException(index, size);
         }
     }
 
-    private void checkAndGrow() {
+    protected void checkAndGrow() {
         if (data.length == size) {
             data = Arrays.copyOf(data, calculateNewLength());
         }
     }
 
     private int calculateNewLength() {
-        return size > 0 ? size *2 : 1;
+        return size > 0 ? size * 2 : 1;
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < size - 1; i++) {
-            sb.append(data[i]);
-            sb.append(", ");
-        }
-        if (size > 0) {
-            sb.append(data[size - 1]);
-        }
-        sb.append("]");
-        return sb.toString();
+    public E[] toArray() {
+        return data;
+    }
+
+    @Override
+    public Array<E> copy() {
+//        try {
+//            return this.clone();
+//        } catch (CloneNotSupportedException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+        ArrayImpl<E> array = new ArrayImpl<>(size);
+        array.size = size;
+        array.data = Arrays.copyOf(this.data, size);
+        return array;
+    }
+
+    @Override
+    protected ArrayImpl<E> clone() throws CloneNotSupportedException {
+        return (ArrayImpl<E>) super.clone();
     }
 }

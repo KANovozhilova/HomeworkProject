@@ -1,4 +1,4 @@
-package ADS.Lesson2.base;
+package ADS.Lesson2;
 
 public interface Array<E> {
 
@@ -30,5 +30,9 @@ public interface Array<E> {
     void sortBubble();
     void sortSelect();
     void sortInsert();
+
+    E[] toArray();
+
+    Array<E> copy();
 
 }
