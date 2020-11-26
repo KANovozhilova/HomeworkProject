@@ -1,0 +1,38 @@
+package ADS.Lesson6;
+
+import java.util.Random;
+
+public class TreeApp {
+    public static void main(String[] args) {
+        Random rnd = new Random();
+        int treeCount = 20;
+        int maxLevel = 4;
+        int nodeCount = (int) (Math.pow(2, maxLevel) - 1);
+
+        int maxValue = 25;
+
+        int balancedTreeCount = 0;
+
+        boolean treeView = false;
+
+        for (int i = 0; i < treeCount; i++) {
+            Tree<Integer> theTree = new TreeImpl<>(maxLevel);
+            initTree(rnd, nodeCount, maxValue, theTree);
+            if (theTree.isBalanced()) {
+                balancedTreeCount++;
+                if (!treeView) {
+                    treeView = true;
+                    theTree.display();
+                }
+            }
+        }
+
+        System.out.println("Процент сбалансированных деревьев - " + ((balancedTreeCount / (treeCount * 1.0)) * 100) + "%");
+    }
+
+    private static void initTree(Random rand, int nodeCount, int maxValue, Tree<Integer> theTree) {
+        for (int j = 0; j < nodeCount; j++) {
+            theTree.add(rand.nextInt(maxValue * 2 + 1) - maxValue);
+        }
+    }
+}
